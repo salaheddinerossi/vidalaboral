@@ -3,21 +3,18 @@ import React from 'react';
 const Footer = () => {
     const footerNavs = [
         {
-            label: 'Company',
+            label: 'Enlaces Útiles',
             items: [
-                { href: 'javascript:void(0)', name: 'Partners' },
-                { href: 'javascript:void(0)', name: 'Blog' },
-                { href: 'javascript:void(0)', name: 'Team' },
-                { href: 'javascript:void(0)', name: 'Careers' },
+                { href: 'javascript:void(0)', name: 'Aviso Legal' },
+                { href: 'javascript:void(0)', name: 'Política de Privacidad' },
+                { href: 'javascript:void(0)', name: 'Política de cookies' },
             ],
         },
         {
-            label: 'Resources',
+            label: 'Contacto',
             items: [
-                { href: 'javascript:void(0)', name: 'Contact' },
-                { href: 'javascript:void(0)', name: 'Support' },
-                { href: 'javascript:void(0)', name: 'Docs' },
-                { href: 'javascript:void(0)', name: 'Pricing' },
+                { href: 'mailto:contacto@Vidalaboralonline.site', name: 'contacto@Vidalaboralonline.site' },
+                { href: 'tel:919612316', name: '919 612 316' },
             ],
         },
     ];

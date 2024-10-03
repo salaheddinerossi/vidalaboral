@@ -47,24 +47,15 @@ export default function Home() {
                                 100% Online y desde cualquier parte del mundo.
                             </h1>
                         </FancyAnimatedText>
-
                     </div>
-
                     <AnimatedAeternityButton delay={2} />
-
-
                 </div>
             </HeroHighlight>
             <ChatComponent ></ChatComponent>
-
             <GridBackgroundDemo  />
-
             <TimelineFeatures ></TimelineFeatures>
-
-
             <CardsContainer ></CardsContainer>
-
-            <Footer></Footer>
+            <Footer/>
         </div>
     );
 }

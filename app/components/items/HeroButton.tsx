@@ -8,24 +8,29 @@ interface AnimatedAeternityButtonProps {
 }
 
 const AnimatedAeternityButton: React.FC<AnimatedAeternityButtonProps> = ({
-                                                                             delay = 0, // Default delay value
+                                                                             delay = 0,
                                                                          }) => {
     return (
         <motion.div
-            initial={{ opacity: 0, scale: 0.8 }} // Initial state
-            animate={{ opacity: 1, scale: 1 }} // Final state
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{
-                duration: 0.5, // The animation duration itself
-                delay: delay, // Delay from props
+                duration: 0.5,
+                delay: delay,
             }}
         >
-            <LitUpBorderButton
-                text="Contáctenos"
-                disabled={false}
-                className="my-4"
-            />
+            <a href="tel:919612316">
+                <LitUpBorderButton
+                    text="Contáctenos"
+                    disabled={false}
+                    className="my-4"
+                />
+
+            </a>
         </motion.div>
     );
 };
+
+
 
 export default AnimatedAeternityButton;
