@@ -3,8 +3,11 @@ import {Navbar} from "@/app/components/items/Navbar";
 import AnimatedAeternityButton from "@/app/components/items/HeroButton";
 import AnimatedText from "@/app/components/items/AnimateText";
 import FancyAnimatedText from "@/app/components/items/FancyAnimatedText";
-import {WhoAreWe} from "@/app/components/items/WhoAreWe";
 import {ChatComponent} from "@/app/components/items/ChatComponent";
+import {GridBackgroundDemo} from "@/app/components/ui/GridBackgroundDemo";
+import {TimelineFeatures} from "@/app/components/items/TimelineFeatures";
+import {CardsContainer} from "@/app/components/items/CardsContainer";
+import Footer from "@/app/components/items/Fooeter";
 
 export default function Home() {
     return (
@@ -52,10 +55,16 @@ export default function Home() {
 
                 </div>
             </HeroHighlight>
-            <ChatComponent></ChatComponent>
+            <ChatComponent ></ChatComponent>
 
-            <WhoAreWe></WhoAreWe>
+            <GridBackgroundDemo  />
 
+            <TimelineFeatures ></TimelineFeatures>
+
+
+            <CardsContainer ></CardsContainer>
+
+            <Footer></Footer>
         </div>
     );
 }

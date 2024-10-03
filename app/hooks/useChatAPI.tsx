@@ -25,9 +25,9 @@ export const useChatAPI = () => {
             const data: ChatResponse = await response.json();
             setLoading(false);
             return data;
-        } catch (error) {
+        } catch  (error) {
             console.error("Error sending message:", error);
-            setLoading(false);
+            setLoading( false);
             return null;
         }
     };

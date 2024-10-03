@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { motion, stagger, useAnimate } from "framer-motion";
+import { motion, stagger, useAnimate, useInView } from "framer-motion";
 import { cn } from "../../lib/util";
 
 export const TextGenerateEffect = ({
@@ -8,36 +8,42 @@ export const TextGenerateEffect = ({
                                        className,
                                        filter = true,
                                        duration = 0.3,
-                                       startDelay = 0, // Add the startDelay prop with a default value of 0 seconds
+                                       startDelay = 0,
                                    }: {
     words: string;
     className?: string;
     filter?: boolean;
     duration?: number;
-    startDelay?: number; // The delay before the animation starts
+    startDelay?: number;
 }) => {
     const [scope, animate] = useAnimate();
     let wordsArray = words.split(" ");
 
-    useEffect(() => {
-        // Set up the animation with startDelay
-        const animationStart = async () => {
-            await new Promise((resolve) => setTimeout(resolve, startDelay * 1000)); // Convert startDelay to milliseconds
-            animate(
-                "span",
-                {
-                    opacity: 1,
-                    filter: filter ? "blur(0px)" : "none",
-                },
-                {
-                    duration: duration ? duration : 1,
-                    delay: stagger(0.2),
-                }
-            );
-        };
+    // Use useInView to trigger animation when the element is in view
+    const isInView = useInView(scope, { once: true, amount: 0.3 }); // Trigger when 30% of the component is visible
 
-        animationStart();
-    }, [scope.current, startDelay]);
+    useEffect(() => {
+        if (isInView) {
+            const animationStart = async () => {
+                await new Promise((resolve) =>
+                    setTimeout(resolve, startDelay * 1000)
+                ); // Convert startDelay to milliseconds
+                animate(
+                    "span",
+                    {
+                        opacity: 1,
+                        filter: filter ? "blur(0px)" : "none",
+                    },
+                    {
+                        duration: duration ? duration : 1,
+                        delay: stagger(0.2),
+                    }
+                );
+            };
+
+            animationStart();
+        }
+    }, [isInView, startDelay]);
 
     const renderWords = () => {
         return (
@@ -46,7 +52,7 @@ export const TextGenerateEffect = ({
                     return (
                         <motion.span
                             key={word + idx}
-                            className="text-white text-black opacity-0"
+                            className="text-white opacity-0 text-center text-3xl"
                             style={{
                                 filter: filter ? "blur(10px)" : "none",
                             }}

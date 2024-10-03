@@ -1,12 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Box, Input, Button, VStack, HStack } from "@chakra-ui/react";
 import { v4 as uuidv4 } from 'uuid';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { useChatAPI } from "../../hooks/useChatAPI";
 import ReactMarkdown from "react-markdown";
 import Image from 'next/image';
-import avatarImage from '../../../public/images/avatar.jpg'; // Import the avatar image as an object
+import avatarImage from '../../../public/images/avatar.jpg';
 
 type Message = {
     id: number;
@@ -18,9 +18,12 @@ export const ChatComponent: React.FC = () => {
     const [messages, setMessages] = useState<Message[]>([
         { id: 1, text: "¡Hola! ¿Cómo puedo asistirte hoy?", sender: "bot" },
     ]);
-    const [input, setInput] = useState<string>(""); // User input state
-    const [sessionId, setSessionId] = useState<string>(""); // Manage session ID
+    const [input, setInput] = useState<string>("");
+    const [sessionId, setSessionId] = useState<string>("");
     const { sendMessage, loading } = useChatAPI();
+
+    const chatRef = useRef(null); // Reference for chat container
+    const isInView = useInView(chatRef, { once: true });
 
     useEffect(() => {
         const newSessionId = uuidv4();
@@ -29,7 +32,6 @@ export const ChatComponent: React.FC = () => {
 
     const handleSendMessage = async () => {
         if (input.trim()) {
-            // Add user message to the state
             const newMessage: Message = { id: messages.length + 1, text: input, sender: "user" };
             setMessages([...messages, newMessage]);
             setInput("");
@@ -46,13 +48,18 @@ export const ChatComponent: React.FC = () => {
     };
 
     return (
-        <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-black to-gray-900">
-            <Box className="relative z-10 bg-gray-900 bg-opacity-50 backdrop-blur-md text-white w-full max-w-4xl h-[600px] rounded-lg shadow-lg overflow-hidden p-4">
-
+        <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-b from-neutral-950 to-gray-900">
+            <motion.div
+                ref={chatRef}
+                initial={{ opacity: 0, y: 50 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+                className="relative z-10 bg-gray-900 bg-opacity-50 backdrop-blur-md text-white w-full max-w-4xl h-[600px] rounded-lg shadow-lg overflow-hidden p-4"
+            >
                 <motion.div
                     initial={{ opacity: 0, y: -50 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
                     className="relative z-10 bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-xl font-bold py-4 px-6 rounded-t-lg shadow-md"
                 >
                     Tu asistente virtual para los procesos de Vida Laboral.
@@ -63,8 +70,8 @@ export const ChatComponent: React.FC = () => {
                         <Image
                             src={avatarImage}
                             alt="Chat Bot Avatar"
-                            width={150}
-                            height={150}
+                            width={220}
+                            height={220}
                             objectFit="cover"
                         />
                     </div>
@@ -78,7 +85,7 @@ export const ChatComponent: React.FC = () => {
                     as={motion.div}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2, duration: 0.8 }}
+                    transition={{ delay: 0.7, duration: 0.8 }} // Increased delay for the chat messages
                 >
                     {messages.map((message) => (
                         <HStack
@@ -87,7 +94,7 @@ export const ChatComponent: React.FC = () => {
                             as={motion.div}
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.5, ease: "easeOut" }}
+                            transition={{ duration: 0.5, ease: "easeOut", delay: 0.8 }} // Added delay to each message
                         >
                             <Box
                                 className={`inline-block px-4 py-2 rounded-lg ${
@@ -108,7 +115,7 @@ export const ChatComponent: React.FC = () => {
                     as={motion.div}
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 }}
+                    transition={{ duration: 0.5, ease: "easeOut", delay: 0.9 }} // Delay added to the input section
                 >
                     <Input
                         variant="unstyled"
@@ -116,7 +123,7 @@ export const ChatComponent: React.FC = () => {
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-                        className="bg-gray-900 text-white focus:ring-teal-500 focus:ring-2 flex-grow mr-2" // Make input stretch
+                        className="py-2 px-1 rounded outline-none bg-gray-800 text-white  focus:ring-2 flex-grow mr-2 "
                     />
                     <Button
                         onClick={handleSendMessage}
@@ -128,7 +135,7 @@ export const ChatComponent: React.FC = () => {
                         Send
                     </Button>
                 </HStack>
-            </Box>
+            </motion.div>
 
             <div className="absolute inset-0 z-0 pointer-events-none bg-dot-pattern opacity-40" />
         </section>
